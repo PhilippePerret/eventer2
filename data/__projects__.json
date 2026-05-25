@@ -7,7 +7,7 @@
   },
   "persos": [],
   "brins": [],
-  "events": ["digestmd5", "__e2e__"],
+  "events": ["digestmd5", "e2e"],
   "last_ids": {
     "events": 0, 
     "brins": 0, 
