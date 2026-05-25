@@ -4,46 +4,9 @@
   "options": {
     "colorizeEventsWithFirstBrin": true
   },
-  "personnages": [],
+  "persos": [],
   "brins": [],
-  "evenements": [
-    {
-      "id": "evt-a",
-      "text": "A",
-      "brins": [],
-      "persos": [],
-      "checked": false,
-      "state": "---",
-      "type": "",
-      "duration": null,
-      "file": "",
-      "child": ""
-    },
-    {
-      "id": "evt-b",
-      "text": "B",
-      "brins": [],
-      "persos": [],
-      "checked": false,
-      "state": "---",
-      "type": "",
-      "duration": null,
-      "file": "",
-      "child": ""
-    },
-    {
-      "id": "evt-c",
-      "text": "C",
-      "brins": [],
-      "persos": [],
-      "checked": false,
-      "state": "---",
-      "type": "",
-      "duration": null,
-      "file": "",
-      "child": ""
-    }
-  ],
+  "events": [],
   "project": "__e2e__",
   "path": "",
   "parentPath": "",

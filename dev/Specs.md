@@ -1,5 +1,55 @@
 # Eventer2
 
+## Description
+
+Application qui permet de gérer les évènemenciers de projets de film ou de roman. 
+
+Un *évènemencier* (`eventer` dans l’application) est simplement une suite d’évènements (`event` dans l’application) au sens anglo-saxon du terme, c’est-à-dire au sens de « quelque chose qui se passe » d’importance quelconque. Une action (remplir un verre d’eau) est un évènement, un dialogue est un évènement, un morceau de ce dialogue est un évènement.
+
+Un évènement a une échelle déterminé. Par exemple, l’échelle d’un évènemencier de premier niveau est l’acte. Donc **chaque acte est un évènement** (de longue durée).
+
+Un évènement quelconque possède son propre évènemencier, de niveau inférieur (ou d’échelle inférieure). Dans une histoire traitée de façon traditionnelle, on peut avoir : 
+
+~~~
+Projet (eventer supérieur)
+	Il contient des évènements d'échelle "acte"
+	event : Exposition
+	event : Développement
+	event : Dénouement
+
+Chacun de ces évènements contient son propre événemencier
+d'échelle "séquence" :
+
+Exposition
+	event : Séquence 1
+	event : Séquence 2
+	...
+	event	: Séquence N
+
+Chacun de ces évènements "séquence" contient son propre
+évènemencier d'échelle "scène" :
+
+Séquence 3
+	event : Scène 1
+	event : Scène 2
+	...
+	event	: Scène N
+	
+Etc. On trouve donc traditionnellement la hiérarchie :
+
+Project
+	Acte
+		Séquence
+			Scène
+				Beat de scène
+					Action/Dialogue
+						Paragraphe final
+~~~
+
+**Eventer** gère en douceur et de façon très pratique, entièrement au clavier, ces évènemenciers, pour un développement confortable et agile de la structure, en permettant notamment de se focaliser sur des intrigues particulières, ou des décors, ou des personnages, etc.
+
+---
+
 ## Philosophie
 
 - outil local
@@ -7,6 +57,7 @@
 - interface silencieuse
 - priorité absolue à la fluidité
 - zéro sensation “base de données”
+- développement en TDD
 
 ---
 
@@ -14,6 +65,9 @@
 
 * Application ruby Sinatra (cf. app.rb)
 * l’enregistrement est automatique, transparent
+* tout clavier, presque rien à la souris
+* sauvegarde en JSON
+* identifiants les plus courts possible
 
 
 
@@ -69,6 +123,12 @@ Eventer2/
 └── exports/
 ```
 
+
+
+> Il y avait un Database.js dans la version 1 (qui fonctionnait aussi sans base de données)
+
+
+
 ---
 
 # Backend
@@ -100,26 +160,53 @@ Aucune logique métier compliquée.
 ## Project
 
 > C’est un eventer comme les autres, avec certaines propriétés propres.
+>
+> Mais surtout : liste des projets est aussi un eventer, mais à l’affichage spécial. Revenir au bel affichage initial (voir css ?)
+
+Attention à la **création particulière d’un projet** : quand on fait « n » (dans le panneau des projets — qui est un panneau eventer puisque), ça crée un élément dans le DOM, mais c’est tout. Si l’user annule tout de suite (escape, Enter en laissant le champ libre), ça supprime l’élément DOM et ça re-sélectionne l’ancien projet. Si l’user entre le titre, l’app crée vraiment le projet (identifiant en pur ASCII et sans espace, fichier json et dossier dans le finder, dossier data de l’application).
+
+
 
 ## Eventer
 
 ~~~json
-title				: "Le titre de l'éventer ou du projet"
 id					: "ev12"  // fixé par l'app
-events			: [liste des events]
+											// sert à nommer le dossier qui
+											// contiendra ses sous-eventers
+scale				: eventer
+events			: [liste des ids d’events]
 options 		:
 	colorizeEventsWithFirstBrin: true
 persos			: [liste des ids de personnages de l’eventer]
 brins				: [liste des ids de brins de l’eventer]
-project 		: "id-du-projet"
+project_id	: "id-du-projet"
 active  		: true 		// seulement pour les projects
 created_at	: date de création
 updated_at	: date de dernière modification
+// ---- Seulement pour les projets ----
+title				: "Le titre du projet"
+nature			: "roman" ou "film"
+lasts_id		: {event: x, brin: y, perso: z}
+
 ~~~
 
+> La propriété `title`, a priori, servira surtout pour les éventers de type « Project ».
 
+### scales (eventer)
+
+Un *Eventer* peut être de trois scales (échelles) assez distincts.
+
+> À l’avenir, on pourrait imaginer avec plus de valeurs, comme « séquencier », « scénier », « scene beat », etc.
+
+| Type          | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| **`project`** | C’est en quelque sorte l’eventer de premier niveau d’un projet. Il définit souvent les actes des l’histoire. |
+| **`eventer`** | C’est l’évènemencier (liste d’évènements, d’events) normal.  |
+| **`text`**    | C’est un évènemencier comme un autre dans son fonctionnement général, mais il est traité comme le texte final de l’histoire, c’est-à-dire comme un scénario si c’est un film (mis en forme en scénario) soit comme un texte de manuscrit pour un roman.<br />**Question** : faut-il mettre une option pour déterminer que, par défaut, l’eventer de niveau le plus profond doit être toujours considéré comme l’eventer de type `text` (qui servira donc à l’export pour produire le manuscrit ou le scénario final) ? |
 
 ## Event
+
+> Les évènements (event) sont conservés dans le fichier `__events__.json` dans le dossier du projet ou de l’évènemencier.
 
 ```json
 id     		: "ev12"
@@ -134,9 +221,9 @@ state			: 1
 child			: true
 ```
 
-> La propriété `child` est `true` lorsque l’event possède son propre eventer (donc ses sous-évènements) et qu’il y a au moins un évènement.
+> La propriété `child` est `true` lorsque l’event possède son propre eventer (donc ses sous-évènements) et qu’il y a au moins un évènement. Attention à cette gestion : quand on est sur un event, si on fait la flèche droite, on crée automatiquement l’eventer de l’event. Mais si on ne crée pas d’events dedans (qu’on revient tout de suite) il ne faut pas que cette propriété soit mise à true. En conclusion : cette propriété doit être à true SEULEMENT lorsque l’event possède un eventer qui contient au moins un event.
 >
-> Cet eventer est alors enregistré dans 
+> Cet eventer est alors enregistré dans un fichier JSON portant le nom de l’identifiant de l’event.
 
 ### States (event)
 
@@ -178,6 +265,8 @@ amo3 : "Toride/passioné"
 
 ## Brin
 
+> Les brins sont consignés dans le fichier `__brins__.json` du dossier du projet. Tous les brins y sont consignées (contrairement aux évènements qui se trouvent ici mais aussi dans des dossiers de dossier de dossier d’évènement.
+
 | Propriété | description                                                  |      |
 | --------- | ------------------------------------------------------------ | ---- |
 | `id`      | Identifiant unique et universel                              |      |
@@ -198,6 +287,8 @@ mint	: Intrigue principale
 
 
 ## Perso
+
+> Les personnages sont tous tous consignés dans le fichier `__persos__.json` dans le dossier du projet. Comme les brins.
 
 | Propriété   | DESCRIPTION                             | VALEURS             |
 | ----------- | --------------------------------------- | ------------------- |
@@ -221,7 +312,13 @@ spre		: Sprechhund
 (à poursuivre)
 ~~~
 
+---
 
+## Identifiants
+
+Pour réduire la taille des fichiers, faire les identifiants les plus courts possible (rappel : ceux des projets sont définis par l’user). C’est-à-dire qu’on prend la première lettre du type et on l’incrémente.  Par exemple « b » + x pour les brins, « p » + x pour les personnages, « e » + x pour les évènements, mais « ev » + x pour les évènemenciers.
+
+=> Il faut persister les derniers identifiants de chaque type d’objet (dans la donnée du projet)
 
 ---
 
