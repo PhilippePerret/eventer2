@@ -5,8 +5,8 @@
   "options": {
     "colorizeEventsWithFirstBrin": false
   },
-  "persos": ["p1"],
   "brins": ["b1"],
+  "persos": ["p1"],
   "events": ["e1", "e2", "e3"],
   "last_ids": {
     "events": 3, 

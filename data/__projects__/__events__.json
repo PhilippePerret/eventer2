@@ -1,0 +1,28 @@
+[
+  {
+    "id": "digestmd5",
+    "text": "Digest / MD5",
+    "brins": [],
+    "persos": [],
+    "checked": false,
+    "state": "---",
+    "type": "",
+    "duration": null,
+    "file": "",
+    "child": true,
+    "pos": 1000
+  },
+  {
+    "id": "__e2e__",
+    "text": "E2E",
+    "brins": [],
+    "persos": [],
+    "checked": false,
+    "state": "---",
+    "type": "",
+    "duration": null,
+    "file": "",
+    "child": false,
+    "pos": 2000
+  }
+]
