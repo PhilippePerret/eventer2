@@ -1,0 +1,3 @@
+class EventCollection extends ItemCollection {
+  
+}

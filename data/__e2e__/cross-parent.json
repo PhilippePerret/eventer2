@@ -1,0 +1,32 @@
+{
+  "title": "E2E",
+  "options": {
+    "colorizeEventsWithFirstBrin": true
+  },
+  "personnages": [],
+  "brins": [],
+  "evenements": [
+    {
+      "id": "cross-child-target",
+      "text": "Event cible enfant",
+      "brins": [],
+      "persos": [],
+      "checked": false,
+      "state": "---",
+      "type": "",
+      "duration": null,
+      "file": "",
+      "child": "",
+      "childHasEvents": false
+    }
+  ],
+  "project": "__e2e__",
+  "path": "",
+  "parentPath": "",
+  "breadcrumbs": [
+    {
+      "label": "E2E",
+      "path": ""
+    }
+  ]
+}

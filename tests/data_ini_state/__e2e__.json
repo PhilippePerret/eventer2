@@ -1,0 +1,56 @@
+{
+  "title": "E2E",
+  "active": true,
+  "options": {
+    "colorizeEventsWithFirstBrin": true
+  },
+  "personnages": [],
+  "brins": [],
+  "evenements": [
+    {
+      "id": "evt-a",
+      "text": "A",
+      "brins": [],
+      "persos": [],
+      "checked": false,
+      "state": "---",
+      "type": "",
+      "duration": null,
+      "file": "",
+      "child": ""
+    },
+    {
+      "id": "evt-b",
+      "text": "B",
+      "brins": [],
+      "persos": [],
+      "checked": false,
+      "state": "---",
+      "type": "",
+      "duration": null,
+      "file": "",
+      "child": ""
+    },
+    {
+      "id": "evt-c",
+      "text": "C",
+      "brins": [],
+      "persos": [],
+      "checked": false,
+      "state": "---",
+      "type": "",
+      "duration": null,
+      "file": "",
+      "child": ""
+    }
+  ],
+  "project": "__e2e__",
+  "path": "",
+  "parentPath": "",
+  "breadcrumbs": [
+    {
+      "label": "E2E",
+      "path": ""
+    }
+  ]
+}

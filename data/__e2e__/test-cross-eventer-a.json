@@ -1,0 +1,22 @@
+{
+  "title": "",
+  "options": {
+    "colorizeEventsWithFirstBrin": true
+  },
+  "personnages": [],
+  "brins": [],
+  "evenements": [],
+  "project": "__e2e__",
+  "path": "test-cross-eventer-a",
+  "parentPath": "",
+  "breadcrumbs": [
+    {
+      "label": "E2E",
+      "path": ""
+    },
+    {
+      "label": "test-cross-eventer-a",
+      "path": "test-cross-eventer-a"
+    }
+  ]
+}
