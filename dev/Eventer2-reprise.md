@@ -24,6 +24,10 @@
 - fichiers tests dans `tests.zip`
 - les ZIP ne doivent contenir QUE les fichiers nouveaux/modifiés
 - Mettre les fichiers tests dans des dossiers pour une meilleure hiérarchie (app, navigation, eventer, ui, etc.)
+- Quand on travaille sur une partie, faire des tests plus BAVARDS pour ne pas s’éparpiller : 
+  - => mettre des logs dans le code de l’application
+  - => être plus précis dans les tests quand c’est possible pour savoir ce qui ne va pas exactement.
+
 
 ## Réponses
 
