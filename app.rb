@@ -1,26 +1,22 @@
 require 'sinatra'
 require 'json'
-require_relative './lib/eventer/bootstrap'
-require_relative './lib/eventer/data_paths'
-require_relative './lib/eventer/http_helpers'
-require_relative './lib/eventer/project_repository'
-require_relative './lib/eventer/eventer_repository'
+require 'fileutils'
+require 'securerandom'
+
+require_relative './lib/data_store'
+require_relative './lib/eventer_store'
+require_relative './lib/project_store'
+require_relative './lib/bootstrap'
+require_relative './lib/app_helpers'
 
 set :public_folder, 'public'
 
 DATA_DIR = File.expand_path('data', __dir__)
+DEFAULT_PROJECT = 'demo'
 
-paths = Eventer::DataPaths.new(DATA_DIR)
+helpers AppHelpers
 
-configure do
-  set :eventer_paths, paths
-  set :project_repository, Eventer::ProjectRepository.new(paths)
-  set :eventer_repository, Eventer::EventerRepository.new(paths)
-end
-
-Eventer::Bootstrap.new(paths).ensure_initial_data!
-
-helpers Eventer::HttpHelpers
+Bootstrap.ensure_initial_data!(DATA_DIR)
 
 before do
   content_type :json if request.path_info.start_with?('/projects', '/events', '/child')
@@ -32,54 +28,85 @@ get '/' do
 end
 
 get '/projects' do
-  settings.project_repository.all.to_json
+  project_store.projects.to_json
 end
 
 post '/projects' do
-  payload = request_payload
-  project = settings.project_repository.create(payload['name'].to_s)
-  { status: 'ok', project: project, filename: "#{project[:id]}.json" }.to_json
+  payload = read_json_payload
+  project = project_store.create(payload['name'].to_s)
+
+  {
+    status: 'ok',
+    project: project,
+    filename: "#{project[:id]}.json"
+  }.to_json
 end
 
 patch '/projects/:project' do
-  project = settings.project_repository.update(params[:project], request_payload)
-  { status: 'ok', project: project }.to_json
+  payload = read_json_payload
+  project = project_store.update(params[:project], payload)
+
+  {
+    status: 'ok',
+    project: project
+  }.to_json
 end
 
 delete '/projects/:project' do
-  project = settings.project_repository.deactivate(params[:project])
-  { status: 'ok', project: project[:id], active: false }.to_json
+  project_store.archive(params[:project])
+
+  {
+    status: 'ok',
+    project: params[:project],
+    active: false
+  }.to_json
 end
 
 post '/projects/reorder' do
-  settings.project_repository.reorder(request_payload['order'] || [])
+  project_store.reorder(read_json_payload['order'] || [])
+
   { status: 'ok' }.to_json
 end
 
 post '/projects/order' do
-  settings.project_repository.reorder(request_payload['order'] || [])
+  project_store.reorder(read_json_payload['order'] || [])
+
   { status: 'ok' }.to_json
 end
 
 get '/events' do
-  project_id = params[:project] || Eventer::Bootstrap::DEMO_PROJECT_ID
+  project = params[:project] || DEFAULT_PROJECT
   child_path = params[:path] || ''
-  settings.eventer_repository.load(project_id, child_path).to_json
+
+  eventer_store.load_with_navigation(project, child_path).to_json
 end
 
 post '/events' do
-  project_id = params[:project] || Eventer::Bootstrap::DEMO_PROJECT_ID
+  project = params[:project] || DEFAULT_PROJECT
   child_path = params[:path] || ''
-  settings.eventer_repository.save(project_id, child_path, request_payload)
-  { status: 'ok', project: project_id, path: child_path }.to_json
+
+  eventer_store.save(project, child_path, read_json_payload)
+
+  {
+    status: 'ok',
+    project: project,
+    path: child_path
+  }.to_json
 end
 
 post '/child' do
-  project_id = params[:project] || Eventer::Bootstrap::DEMO_PROJECT_ID
-  child_path = settings.eventer_repository.ensure_child(
-    project_id,
+  payload = read_json_payload
+
+  child_path = eventer_store.ensure_child(
+    params[:project] || DEFAULT_PROJECT,
     params[:path] || '',
-    request_payload
+    payload['eventId'],
+    payload['title'].to_s
   )
-  { status: 'ok', project: project_id, path: child_path }.to_json
+
+  {
+    status: 'ok',
+    project: params[:project] || DEFAULT_PROJECT,
+    path: child_path
+  }.to_json
 end
