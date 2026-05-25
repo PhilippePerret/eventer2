@@ -3,9 +3,9 @@
   "options": {
     "colorizeEventsWithFirstBrin": true
   },
-  "personnages": [],
+  "persos": [],
   "brins": [],
-  "evenements": [
+  "events": [
     {
       "id": "parent-a",
       "text": "Premier parent",
