@@ -1,34 +1,22 @@
 {
+  "project": "digestmd5",
   "title": "Digest / MD5",
+  "active": true,
   "options": {
     "colorizeEventsWithFirstBrin": true
   },
   "persos": [],
   "brins": [],
-  "events": [
+  "events": ["e1", "e2", "e3"],
+  "last_ids": {
+    "events": 3, 
+    "brins": 0, 
+    "persos": 0
+  },
+  "breadcrumbs": [
     {
-      "id": "3dc7d3af-b3f9-4974-80b5-69b4109841d4",
-      "text": "",
-      "brins": [],
-      "persos": [],
-      "checked": false,
-      "state": "---",
-      "type": "",
-      "duration": null,
-      "file": "",
-      "child": ""
-    },
-    {
-      "id": "cb372c56-c646-41f3-95c0-f930f48235b1",
-      "text": "Pour voir",
-      "brins": [],
-      "persos": [],
-      "checked": false,
-      "state": "---",
-      "type": "",
-      "duration": null,
-      "file": "",
-      "child": ""
+      "label": "Digest / MD5",
+      "path": ""
     }
   ]
 }

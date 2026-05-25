@@ -1,0 +1,41 @@
+[
+  {
+    "id": "e1",
+    "text": "Acte I",
+    "brins": [],
+    "persos": [],
+    "checked": false,
+    "state": "---",
+    "type": "",
+    "duration": null,
+    "file": "",
+    "child": false,
+    "pos": 1000
+  },
+  {
+    "id": "e2",
+    "text": "Acte II",
+    "brins": [],
+    "persos": [],
+    "checked": false,
+    "state": "---",
+    "type": "",
+    "duration": null,
+    "file": "",
+    "child": false,
+    "pos": 2000
+  },
+  {
+    "id": "e3",
+    "text": "Acte III",
+    "brins": [],
+    "persos": [],
+    "checked": false,
+    "state": "---",
+    "type": "",
+    "duration": null,
+    "file": "",
+    "child": false,
+    "pos": 3000
+  }
+]

@@ -2,11 +2,12 @@ require 'sinatra'
 require 'json'
 require 'fileutils'
 require 'securerandom'
+require_relative './lib/bootstrap'
 
 set :public_folder, 'public'
 
 DATA_DIR = File.expand_path('data', __dir__)
-DEFAULT_PROJECT = 'digestmd5'
+DEFAULT_PROJECT = '__e2__'
 STATE_FILE = File.join(DATA_DIR, '__state__.json')
 
 helpers do
@@ -69,11 +70,20 @@ helpers do
   end
 
   def project_names
+    projects_file = File.join(DATA_DIR, '__projects__.json')
+    if File.exist?(projects_file)
+      begin
+        root_projects = JSON.parse(File.read(projects_file))
+        return root_projects if root_projects.is_a?(Array)
+      rescue StandardError
+      end
+    end
+
     return [] unless Dir.exist?(DATA_DIR)
 
     names = Dir.children(DATA_DIR)
                .select { |entry| entry.end_with?('.json') && File.file?(File.join(DATA_DIR, entry)) }
-               .reject { |entry| entry == '__state__.json' }
+               .reject { |entry| ['__state__.json', '__projects__.json'].include?(entry) }
                .map { |entry| File.basename(entry, '.json') }
 
     state = load_state
@@ -222,6 +232,7 @@ helpers do
 end
 
 before do
+  Bootstrap.ensure_initial_data!(DATA_DIR)
   content_type :json if request.path_info.start_with?('/projects', '/events', '/child')
 end
 
