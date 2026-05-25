@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test'
 import fs from 'fs'
 import path from 'path'
 
-const DATA_FOLDER = path.join(process.cwd(), 'data')
+const PROJECT_ROOT = path.resolve(process.cwd(), '..')
+const DATA_FOLDER = path.join(PROJECT_ROOT, 'data')
 
 function exists(pathname) {
   return fs.existsSync(pathname)
@@ -17,6 +18,13 @@ function expectPathExists(pathname, label) {
     exists(pathname),
     `${label} introuvable : ${pathname}`
   ).toBe(true)
+}
+
+function expectPathMissing(pathname, label) {
+  expect(
+    exists(pathname),
+    `${label} ne doit pas exister : ${pathname}`
+  ).toBe(false)
 }
 
 function expectJsonArray(pathname, label) {
@@ -65,31 +73,38 @@ test.describe('app / bootstrap', () => {
 
     const projectsFile = path.join(DATA_FOLDER, '__projects__.json')
     const projectsFolder = path.join(DATA_FOLDER, '__projects__')
+    const demoEventerFile = path.join(projectsFolder, 'demo.json')
+    const wrongDemoEventerFile = path.join(projectsFolder, 'demo', '__projects__.json')
     const demoFolder = path.join(projectsFolder, 'demo')
-    const demoEventerFile = path.join(demoFolder, '__projects__.json')
     const eventsFile = path.join(demoFolder, '__events__.json')
     const brinsFile = path.join(demoFolder, '__brins__.json')
     const persosFile = path.join(demoFolder, '__persos__.json')
 
     expectPathExists(DATA_FOLDER, 'Dossier data')
-    expectPathExists(projectsFile, 'Index racine des projets')
-    expectPathExists(projectsFolder, 'Dossier racine __projects__')
+    expectPathExists(projectsFile, 'Eventer racine des projets')
+    expectPathExists(projectsFolder, 'Dossier de l’eventer racine __projects__')
+    expectPathExists(demoEventerFile, 'Fichier eventer du projet demo')
     expectPathExists(demoFolder, 'Dossier du projet demo')
-    expectPathExists(demoEventerFile, 'Eventer projet demo')
     expectPathExists(eventsFile, 'Liste des events du projet demo')
     expectPathExists(brinsFile, 'Liste des brins du projet demo')
     expectPathExists(persosFile, 'Liste des personnages du projet demo')
+    expectPathMissing(wrongDemoEventerFile, 'Ancien mauvais fichier eventer demo')
 
-    const projectIds = expectJsonArray(projectsFile, 'Index racine des projets')
+    const rootEventer = readJson(projectsFile)
     const demoEventer = readJson(demoEventerFile)
     const events = expectJsonArray(eventsFile, 'Liste des events du projet demo')
     const brins = expectJsonArray(brinsFile, 'Liste des brins du projet demo')
     const persos = expectJsonArray(persosFile, 'Liste des personnages du projet demo')
 
     expect(
-      projectIds,
-      `__projects__.json doit contenir uniquement ["demo"]. Reçu : ${JSON.stringify(projectIds)}`
+      rootEventer.events,
+      `L’eventer racine doit lister le projet demo dans events. Reçu : ${JSON.stringify(rootEventer)}`
     ).toEqual(['demo'])
+
+    expect(
+      rootEventer,
+      `Propriété interdite "evenements" trouvée dans l’eventer racine : ${JSON.stringify(rootEventer)}`
+    ).not.toHaveProperty('evenements')
 
     expect(
       demoEventer.scale,

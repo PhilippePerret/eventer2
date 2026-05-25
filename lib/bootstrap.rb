@@ -1,3 +1,6 @@
+require 'time'
+require 'fileutils'
+
 class Bootstrap
   DEMO_PROJECT_ID = 'demo'
   DEMO_PROJECT_TITLE = 'Projet de démonstration'
@@ -29,11 +32,30 @@ class Bootstrap
     @store.ensure_data_dir
     FileUtils.mkdir_p(@store.project_folder(DEMO_PROJECT_ID))
 
-    @store.write_json(@store.projects_index_path, [DEMO_PROJECT_ID])
+    @store.write_json(
+      @store.projects_index_path,
+      root_eventer
+    )
     @store.write_json(@store.project_eventer_path(DEMO_PROJECT_ID), demo_project)
     @store.write_json(@store.events_path(DEMO_PROJECT_ID), demo_events)
     @store.write_json(@store.brins_path(DEMO_PROJECT_ID), demo_brins)
     @store.write_json(@store.persos_path(DEMO_PROJECT_ID), demo_persos)
+  end
+
+  def root_eventer
+    {
+      id: '__projects__',
+      scale: 'eventer',
+      events: [DEMO_PROJECT_ID],
+      brins: [],
+      persos: [],
+      project_id: nil,
+      active: true,
+      options: { colorizeEventsWithFirstBrin: true },
+      lasts_id: { event: 1, brin: 0, perso: 0 },
+      created_at: Time.now.iso8601,
+      updated_at: Time.now.iso8601
+    }
   end
 
   def demo_project

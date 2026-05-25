@@ -33,7 +33,7 @@ class DataStore
   end
 
   def project_eventer_path(project_id)
-    File.join(project_folder(project_id), PROJECTS_FILE)
+    File.join(projects_root_path, "#{safe_id(project_id, 'Projet invalide')}.json")
   end
 
   def events_path(project_id, child_path = '')

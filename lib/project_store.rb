@@ -1,3 +1,5 @@
+require 'time'
+
 class ProjectStore
   def initialize(store, eventer_store)
     @store = store
@@ -75,12 +77,30 @@ class ProjectStore
   private
 
   def project_ids
-    ids = @store.read_json(@store.projects_index_path, [])
+    root = @store.read_json(@store.projects_index_path, empty_root_eventer)
+    ids = root.is_a?(Array) ? root : root.fetch('events', [])
     ordered_ids(ids)
   end
 
   def save_project_ids(ids)
-    @store.write_json(@store.projects_index_path, ids.uniq)
+    root = @store.read_json(@store.projects_index_path, empty_root_eventer)
+    root = empty_root_eventer if root.is_a?(Array)
+    root['events'] = ids.uniq
+    root['updated_at'] = Time.now.iso8601
+    @store.write_json(@store.projects_index_path, root)
+  end
+
+  def empty_root_eventer
+    {
+      'id' => '__projects__',
+      'scale' => 'eventer',
+      'events' => [],
+      'brins' => [],
+      'persos' => [],
+      'project_id' => nil,
+      'active' => true,
+      'lasts_id' => { 'event' => 0, 'brin' => 0, 'perso' => 0 }
+    }
   end
 
   def ordered_ids(ids)

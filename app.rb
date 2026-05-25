@@ -16,9 +16,8 @@ DEFAULT_PROJECT = 'demo'
 
 helpers AppHelpers
 
-Bootstrap.ensure_initial_data!(DATA_DIR)
-
 before do
+  Bootstrap.ensure_initial_data!(DATA_DIR)
   content_type :json if request.path_info.start_with?('/projects', '/events', '/child')
 end
 
