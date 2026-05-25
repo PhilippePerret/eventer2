@@ -154,17 +154,17 @@ test.describe('app / projects listing', () => {
 
     expect(
       projects,
-      `/projects doit retourner alpha et beta depuis data. Reçu : ${JSON.stringify(projects)}`
+      `/projects doit retourner uniquement les propriétés publiques attendues : id, scale, title, active. Reçu : ${JSON.stringify(projects)}`
     ).toEqual([
       {
         id: 'alpha',
-        file: 'alpha.json',
+        scale: 'project',
         title: 'Projet Alpha',
         active: true
       },
       {
         id: 'beta',
-        file: 'beta.json',
+        scale: 'project',
         title: 'Projet Beta',
         active: true
       }
