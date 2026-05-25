@@ -1,24 +1,17 @@
-export default class ProjectListView {
+import ListingView from './ListingView.js'
+
+export default class ProjectListView extends ListingView {
 
   render(projects) {
-    const panel = document.querySelector('#main-panel')
-
-    panel.className = 'projects-listing'
-    panel.innerHTML = ''
-
-    const list = document.createElement('div')
-    list.className = 'project-listing'
-
-    projects.forEach(project => {
-      list.appendChild(this.buildProjectLine(project))
-    })
-
-    panel.appendChild(list)
+    super.render(
+      'projects-listing',
+      projects
+    )
   }
 
-  buildProjectLine(project) {
-    const line = document.createElement('div')
-    line.className = 'project-listing__item'
+  fillItem(line, project) {
+
+    line.classList.add('project-listing__item')
 
     const title = document.createElement('div')
     title.className = 'project-listing__title'
@@ -30,8 +23,6 @@ export default class ProjectListView {
 
     line.appendChild(title)
     line.appendChild(id)
-
-    return line
   }
 
 }

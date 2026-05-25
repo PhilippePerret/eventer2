@@ -2,7 +2,7 @@
 
 - [x] S’assurer que le style du listing des projets et propre à cet eventer et cet eventer seulement
 
-- [ ] S’assurer que le premier projet (en haut du listing — faire trois projets pour ce test) est bien sélectionné
+- [x] S’assurer que le premier projet (en haut du listing — faire trois projets pour ce test) est bien sélectionné
 
   Ça doit être le cas pour tous les eventer
 
@@ -20,6 +20,6 @@
 
 - [ ] S’assurer que la modification du titre est bien persistante (Ça doit être le cas pour tous les eventer)
 
-- [ ] S’assurer que la touche « n » permet de créer (provisoirement juste dans le DOM) un nouveau projet SOUS la sélection)
+- [ ] S’assurer que la touche « n » permet de créer (provisoirement juste dans le DOM) un nouveau projet SOUS la sélection — ATTENTION, CONTRAIREMENT AUX ÉVÈNEMENCIERS « NORMAUX », LES PROJETS, QUI NÉCESSITERONT DE FAIRE DES FICHIERS ET DOSSERS DANS LE FINDER, REPORTERONT À UNE VRAIE CRÉATION LA CRÉATION, SEULEMENT SI UN NOM DE PROJET EST BIEN DONNÉ)
 
 - [ ] 

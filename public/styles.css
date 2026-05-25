@@ -474,11 +474,6 @@ main {
   background: rgba(236,230,218,.45);
 }
 
-.event.selected {
-  background: transparent !important;
-  color: inherit !important;
-  border: 0;
-}
 
 .event.selected .event-body {
   background: var(--selected) !important;
@@ -519,11 +514,6 @@ main {
 .event-check-gutter {
   background: #ffffff !important;
   color: #1f9d41 !important;
-}
-
-.event.selected {
-  background: transparent !important;
-  color: inherit !important;
 }
 
 .event.selected .event-body {
@@ -774,14 +764,12 @@ main {
 }
 
 .project-listing__title {
-  font-size: 1rem;
+  font-size: 1.7rem;
   line-height: 1.3;
 }
 
 .project-listing__id {
   margin-left: 2rem;
-
   font-size: 0.82rem;
-
   opacity: 0.72;
 }
