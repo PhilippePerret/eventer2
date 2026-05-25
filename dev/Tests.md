@@ -6,7 +6,7 @@
 
   Ça doit être le cas pour tous les eventer
 
-- [ ] S’assurer que les flèches haut/bas permettent de passer d’un projet à l’autre (Ça doit être le cas pour tous les eventers, pour tous leurs events, donc => ne pas implémenter un comportement qui ne fonctionnerait que pour les projets !!!!)
+- [x] S’assurer que les flèches haut/bas permettent de passer d’un projet à l’autre (Ça doit être le cas pour tous les eventers, pour tous leurs events, donc => ne pas implémenter un comportement qui ne fonctionnerait que pour les projets !!!!)
 
 - [ ] S’assurer que la flèche droite permet de RENTRER dans le projet (c’est-à-dire de voir son premier évènemencier — qui correspond à ses `events`) (idem = valable pour n’importe quel eventer)
 
