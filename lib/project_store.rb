@@ -12,7 +12,7 @@ class ProjectStore
 
       {
         id: id,
-        file: "#{id}.json",
+        scale: eventer['scale'].to_s.empty? ? 'project' : eventer['scale'],
         title: eventer['title'].to_s.empty? ? id : eventer['title'],
         active: eventer['active'] != false
       }
@@ -42,7 +42,7 @@ class ProjectStore
 
     {
       id: id,
-      file: "#{id}.json",
+      scale: 'project',
       title: id,
       active: true
     }
@@ -59,7 +59,7 @@ class ProjectStore
 
     {
       id: id,
-      file: "#{id}.json",
+      scale: data['scale'].to_s.empty? ? 'project' : data['scale'],
       title: data['title'].to_s.empty? ? id : data['title'],
       active: data['active'] != false
     }

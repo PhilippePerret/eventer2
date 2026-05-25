@@ -1,21 +1,21 @@
 {
-  "project": "__projects__",
-  "title": "Projets",
+  "project": "vertueuses",
+  "title": "Vertueuses",
   "active": true,
   "options": {
     "colorizeEventsWithFirstBrin": true
   },
   "persos": [],
   "brins": [],
-  "events": ["digestmd5", "e2e", "vertueuses"],
+  "events": ["e1", "e2", "e3"],
   "last_ids": {
-    "events": 0, 
+    "events": 3, 
     "brins": 0, 
     "persos": 0
   },
   "breadcrumbs": [
     {
-      "label": "",
+      "label": "Vertueuses",
       "path": ""
     }
   ]
