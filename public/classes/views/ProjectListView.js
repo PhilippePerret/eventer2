@@ -3,15 +3,6 @@ import ListingView from './ListingView.js'
 export default class ProjectListView extends ListingView {
 
   render(projects, options = {}) {
-    console.log('[ProjectListView] render', {
-      order: projects.map((project, index) => ({
-        index,
-        id: project.id,
-        title: project.title,
-        pos: project.pos
-      }))
-    })
-
     super.render(
       'projects-listing',
       projects,

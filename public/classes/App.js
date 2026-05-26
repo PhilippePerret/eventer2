@@ -12,28 +12,20 @@ export default class App {
     const projects = await this.projectRepository.all()
 
     console.log('[App] start:projects-loaded', {
-      order: projects.map((project, index) => ({
-        index,
-        id: project.id,
-        title: project.title,
-        pos: project.pos
-      }))
+      order: projects.map(project => ({ id: project.id, title: project.title }))
     })
 
-    this.projectListView.render(projects, {
-      onReorder: async reorderedProjects => {
-        console.log('[App] projects:onReorder', {
-          order: reorderedProjects.map((project, index) => ({
-            index,
-            id: project.id,
-            title: project.title,
-            pos: project.pos
-          }))
-        })
-
-        await this.projectRepository.reorder(reorderedProjects)
+    this.projectListView.render(
+      projects,
+      {
+        onReorder: reorderedProjects => {
+          console.log('[App] projects:reorder', {
+            order: reorderedProjects.map(project => project.id)
+          })
+          this.projectRepository.reorder(reorderedProjects)
+        }
       }
-    })
+    )
   }
 
 }

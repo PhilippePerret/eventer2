@@ -7,10 +7,14 @@
   },
   "persos": [],
   "brins": [],
-  "events": ["digestmd5", "e2e", "vertueuses"],
+  "events": [
+    "e2e",
+    "vertueuses",
+    "digestmd5"
+  ],
   "last_ids": {
-    "events": 0, 
-    "brins": 0, 
+    "events": 0,
+    "brins": 0,
     "persos": 0
   },
   "breadcrumbs": [
@@ -18,5 +22,6 @@
       "label": "",
       "path": ""
     }
-  ]
+  ],
+  "updated_at": "2026-05-26T08:13:18+02:00"
 }

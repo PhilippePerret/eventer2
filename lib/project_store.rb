@@ -69,11 +69,6 @@ class ProjectStore
     update(project_id, { 'active' => false })
   end
 
-  def reorder(order)
-    ids = order.map { |id| @store.safe_id(id.to_s.sub(/\.json$/, ''), 'Projet invalide') }
-    save_project_ids(ids)
-  end
-
   private
 
   def project_ids
@@ -101,14 +96,6 @@ class ProjectStore
       'active' => true,
       'lasts_id' => { 'event' => 0, 'brin' => 0, 'perso' => 0 }
     }
-  end
-
-  def ordered_ids(ids)
-    order = @store.state['projectOrder'] || []
-    known_order = order.select { |id| ids.include?(id) }
-    unordered = ids.reject { |id| known_order.include?(id) }.sort
-
-    known_order + unordered
   end
 
   def available_id(raw_id)

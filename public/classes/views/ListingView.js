@@ -3,7 +3,6 @@ export default class ListingView {
   constructor() {
     this.currentIndex = 0
     this.items = []
-    this.panelClass = null
     this.onReorder = null
   }
 
@@ -11,17 +10,11 @@ export default class ListingView {
 
     this.panelClass = panelClass
     this.items      = items
-    this.onReorder  = options.onReorder || this.onReorder
+    this.onReorder  = options.onReorder || null
 
     if (this.currentIndex >= this.items.length) {
       this.currentIndex = Math.max(0, this.items.length - 1)
     }
-
-    console.log('[ListingView] render', {
-      panelClass: this.panelClass,
-      currentIndex: this.currentIndex,
-      order: this.loggableOrder()
-    })
 
     const panel = document.querySelector('#main-panel')
 
@@ -38,6 +31,12 @@ export default class ListingView {
     })
 
     panel.appendChild(listing)
+
+    console.log('[ListingView] render', {
+      panelClass: this.panelClass,
+      selectedIndex: this.currentIndex,
+      order: this.items.map(item => item.id || item.title || item)
+    })
 
     this.bindKeyboardNavigation()
   }
@@ -62,6 +61,7 @@ export default class ListingView {
     return classes.join(' ')
   }
 
+
   bindKeyboardNavigation() {
 
     document.onkeydown = (event) => {
@@ -70,8 +70,7 @@ export default class ListingView {
         key: event.key,
         metaKey: event.metaKey,
         ctrlKey: event.ctrlKey,
-        currentIndex: this.currentIndex,
-        selected: this.loggableItem(this.items[this.currentIndex])
+        currentIndex: this.currentIndex
       })
 
       if (event.metaKey || event.ctrlKey) {
@@ -108,10 +107,7 @@ export default class ListingView {
 
     this.currentIndex += 1
 
-    console.log('[ListingView] selectNextItem', {
-      currentIndex: this.currentIndex,
-      selected: this.loggableItem(this.items[this.currentIndex])
-    })
+    console.log('[ListingView] selectNextItem', { currentIndex: this.currentIndex })
 
     this.refreshSelection()
   }
@@ -122,15 +118,13 @@ export default class ListingView {
 
     this.currentIndex -= 1
 
-    console.log('[ListingView] selectPreviousItem', {
-      currentIndex: this.currentIndex,
-      selected: this.loggableItem(this.items[this.currentIndex])
-    })
+    console.log('[ListingView] selectPreviousItem', { currentIndex: this.currentIndex })
 
     this.refreshSelection()
   }
 
   moveSelectedItem(direction) {
+
     const sourceIndex = this.currentIndex
     const targetIndex = sourceIndex + direction
 
@@ -138,42 +132,41 @@ export default class ListingView {
       direction,
       sourceIndex,
       targetIndex,
-      selected: this.loggableItem(this.items[sourceIndex]),
-      orderBefore: this.loggableOrder()
+      orderBefore: this.items.map(item => item.id || item.title || item)
     })
 
     if (targetIndex < 0 || targetIndex >= this.items.length) {
-      console.log('[ListingView] moveSelectedItem:blocked', {
-        reason: 'OUT_OF_RANGE',
-        sourceIndex,
-        targetIndex,
-        order: this.loggableOrder()
-      })
+      console.log('[ListingView] moveSelectedItem:blocked', { sourceIndex, targetIndex })
       return
     }
 
-    const reorderedItems = [...this.items]
-    const movedItems = reorderedItems.splice(sourceIndex, 1)
-    const movedItem = movedItems[0]
+    const listing = document.querySelector('.listing')
+    const nodes = listing.querySelectorAll('.event')
 
-    reorderedItems.splice(targetIndex, 0, movedItem)
+    const sourceNode = nodes[sourceIndex]
+    const targetNode = nodes[targetIndex]
 
-    this.items = reorderedItems
+    const movedItem = this.items[sourceIndex]
+
+    this.items.splice(sourceIndex, 1)
+    this.items.splice(targetIndex, 0, movedItem)
+
+    if (direction < 0) {
+      listing.insertBefore(sourceNode, targetNode)
+    } else {
+      listing.insertBefore(targetNode, sourceNode)
+    }
+
     this.currentIndex = targetIndex
 
-    console.log('[ListingView] moveSelectedItem:after-mutation', {
-      moved: this.loggableItem(movedItem),
-      sourceIndex,
-      targetIndex,
-      orderAfter: this.loggableOrder()
+    this.refreshSelection()
+
+    console.log('[ListingView] moveSelectedItem:dom-updated', {
+      currentIndex: this.currentIndex,
+      orderAfter: this.items.map(item => item.id || item.title || item)
     })
 
-    ListingView.prototype.render.call(this, this.panelClass, this.items, { onReorder: this.onReorder })
-
     if (this.onReorder) {
-      console.log('[ListingView] moveSelectedItem:onReorder', {
-        order: this.items.map(item => item.id)
-      })
       this.onReorder(this.items)
     }
   }
@@ -190,26 +183,10 @@ export default class ListingView {
         item.classList.remove('selected')
       }
     })
+
+    console.log('[ListingView] refreshSelection', { currentIndex: this.currentIndex })
   }
 
-  loggableOrder() {
-    return this.items.map((item, index) => ({
-      index,
-      id: item.id,
-      title: item.title,
-      pos: item.pos
-    }))
-  }
-
-  loggableItem(item) {
-    if (!item) return null
-
-    return {
-      id: item.id,
-      title: item.title,
-      pos: item.pos
-    }
-  }
 
   fillItem(_line, _item, _index) {
     throw new Error('fillItem must be implemented')
