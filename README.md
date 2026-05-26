@@ -11,7 +11,9 @@ Deuxième version plus mure de la gestion des évènemenciers.
 
 ## Pour le développement avec ChatGPT
 
-### Installation dans le Finder
+Il suffit de double-cliquer sur le script `xprepare_travail.command` pour exécuter automatiquement toutes les opérations ci-dessous.
+
+### Installation des fenêtres Finder
 
 * Jouer le script `xouvrir_fenetres.command` en double cliquant dessus pour ouvrir les fenêtres utiles.
 
