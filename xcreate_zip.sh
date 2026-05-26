@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ZIP_PATH="$ROOT_DIR/eventer2-app.zip"
+ZIP_PATH="$ROOT_DIR/xeventer2-app.zip"
 
 cd "$ROOT_DIR"
 
