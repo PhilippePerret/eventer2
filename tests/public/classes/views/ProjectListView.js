@@ -2,15 +2,20 @@ import ListingView from './ListingView.js'
 
 export default class ProjectListView extends ListingView {
 
-  constructor(projectRepository) {
-    super()
-    this.projectRepository = projectRepository
-  }
+  render(projects, options = {}) {
+    console.log('[ProjectListView] render', {
+      order: projects.map((project, index) => ({
+        index,
+        id: project.id,
+        title: project.title,
+        pos: project.pos
+      }))
+    })
 
-  render(projects) {
     super.render(
       'projects-listing',
-      projects
+      projects,
+      options
     )
   }
 
@@ -28,12 +33,6 @@ export default class ProjectListView extends ListingView {
 
     line.appendChild(title)
     line.appendChild(id)
-  }
-
-  afterItemsReordered(projects) {
-    const order = projects.map(project => project.id)
-    console.log('[ProjectListView] save project order', order)
-    this.projectRepository.reorder(order)
   }
 
 }
