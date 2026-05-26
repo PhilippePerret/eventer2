@@ -12,38 +12,30 @@
 # Error details
 
 ```
-Error: expect(received).toBe(expected) // Object.is equality
+Error: expect(locator).toHaveClass(expected) failed
 
-- Expected  - 2
-+ Received  + 2
+Locator: locator('.event').first()
+Expected pattern: /selected/
+Received string:  "event project-listing__item"
+Timeout: 5000ms
 
-- Projet Beta
-- beta
-+ Projet Alpha
-+ alpha
+Call log:
+  - Expect "toHaveClass" with timeout 5000ms
+  - waiting for locator('.event').first()
+    14 × locator resolved to <div class="event project-listing__item">…</div>
+       - unexpected value "event project-listing__item"
+
 ```
 
-# Page snapshot
-
 ```yaml
-- generic [active] [ref=e1]:
-  - main [ref=e2]:
-    - generic [ref=e3]:
-      - generic [ref=e4]:
-        - generic [ref=e5]: Projet Alpha
-        - generic [ref=e6]: alpha
-      - generic [ref=e7]:
-        - generic [ref=e8]: Projet Beta
-        - generic [ref=e9]: beta
-      - generic [ref=e10]:
-        - generic [ref=e11]: Projet Gamma
-        - generic [ref=e12]: gamma
-  - contentinfo "Raccourcis clavier" [ref=e13]
+- text: Projet Alpha alpha
 ```
 
 # Test source
 
 ```ts
+  1   | import { test, expect } from '@playwright/test'
+  2   | import fs from 'fs'
   3   | import path from 'path'
   4   | 
   5   | const PROJECT_ROOT = path.resolve(process.cwd(), '..')
@@ -138,14 +130,14 @@ Error: expect(received).toBe(expected) // Object.is equality
   94  | 
   95  |     await page.keyboard.press('Meta+ArrowUp')
   96  | 
-  97  |     await expect(projects.nth(0)).toHaveClass(/selected/)
+> 97  |     await expect(projects.nth(0)).toHaveClass(/selected/)
+      |                                   ^ Error: expect(locator).toHaveClass(expected) failed
   98  | 
   99  |     const orderAfterMoveUp = await projects.evaluateAll(nodes =>
   100 |       nodes.map(node => node.innerText.trim())
   101 |     )
   102 | 
-> 103 |     expect(orderAfterMoveUp[0]).toBe(initialOrder[1])
-      |                                 ^ Error: expect(received).toBe(expected) // Object.is equality
+  103 |     expect(orderAfterMoveUp[0]).toBe(initialOrder[1])
   104 |     expect(orderAfterMoveUp[1]).toBe(initialOrder[0])
   105 |     expect(orderAfterMoveUp[2]).toBe(initialOrder[2])
   106 | 

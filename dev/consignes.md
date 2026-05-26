@@ -38,18 +38,21 @@ S'inspirer toujours du code existant pour produire le comportement attendu.
 
 Le code rendu au cours du développement doit être suffisamment verbeux (verbosité) pour trouver RAPIDEMENT la cause d'un problème ou d'un non fonctionnement.
 
+## LOI 2
+
+Concernant ton comportement.
+
+### 
+
+Ton rôle est de produire du code, pas de philosopher. Donc : le moins de baratin possible.
+
 ---
 
 
 
 
 
-* Les fichiers TESTS doivent être donnés ENTIERS dans `tests.zip`
-* Les fichiers APPLICATION doivent être donnés ENTIERS dans `app.zip`
-* Ne JAMAIS donner de bouts de code à patcher = toujours des FICHIERS ENTIER
-  * quand ils concernent l’application, les mettre dans `app.zip`
-  * quand ils concernent les tests, les mettre dans `tests.zip`
-* Ton rôle est de produire du code, pas de philosopher. Donc : le moins de baratin possible.
+* 
 * Tu ne fais aucun commentaire. Tu n’expliques RIEN (si je ne comprends pas quelque chose, je le demande).
 * Arrête de m’expliquer ce que je sais déjà !!!
 * Tu arrêtes de me prendre pour un crétin (je suis meilleur que toi à tous les niveaux de la programmation : conception et code)
